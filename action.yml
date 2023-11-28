@@ -1,0 +1,122 @@
+name: 'Generate Composer Satis Repository'
+author: 'Matt Walsh'
+description: 'Builds a Composer Satis repository and outputs the build as a GitHub workflow artifact.'
+
+branding:
+  icon: download-cloud
+  color: purple
+
+inputs:
+  php-version:
+    description: 'The version of PHP to use.'
+    required: false
+    default: '8.3'
+  composer-version:
+    description: 'The version of Composer to use.'
+    required: false
+    default: '2.6'
+  satis-version:
+    description: 'Version of Satis to use.'
+    required: false
+    default: 'main'
+  satis-config:
+    description: 'Location of the Satis JSON config file.'
+    required: false
+  cache-composer:
+    description: 'Whether to cache the Composer cache directory.'
+    required: false
+    default: 'true'
+  artifact-name:
+    description: 'Final build artifact name.'
+    required: false
+    default: 'modules-repository-build'
+  retention-days:
+    description: 'Duration to keep the build artifact, in days.'
+    required: false
+    default: '90'
+
+outputs:
+  satis-artifact:
+    description: "The final artifact name."
+    value: ${{ steps.output-artifact-name.outputs.satis-artifact }}
+
+runs:
+  using: 'composite'
+  steps:
+    - id: setup-php
+      name: 'Setup PHP'
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ inputs.php-version }}
+        tools: composer:${{ inputs.composer-version }}
+        coverage: none
+
+    - id: configure-composer
+      name: 'Configure Composer GitHub Token'
+      run: composer config --global --auth github-oauth.github.com ${{ github.token }}
+      shell: bash
+
+    - id: download-satis
+      name: 'Install Satis Via Git Clone'
+      run: |
+        git clone https://github.com/composer/satis.git ${{ env.SATIS_PATH }}
+        cd ${{ env.SATIS_PATH }}
+        git checkout ${{ inputs.satis-version }}
+      shell: bash
+
+    - id: get-composer-cache-dir-path
+      if: ${{ inputs.cache-composer == 'true' }}
+      name: 'Set Composer Cache Directory Path Output'
+      run: |
+        cd ${{ env.SATIS_PATH }}
+        echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+        echo "$(composer config cache-files-dir)"
+      shell: bash
+
+    - id: cache-composer
+      if: ${{ inputs.cache-composer == 'true' }}
+      name: 'Cache Composer Cache Directory'
+      uses: actions/cache@v3
+      with:
+        path: ${{ steps.get-composer-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('satis/composer.lock') }}
+
+    - id: run-satis-composer-install
+      name: 'Run Composer Install'
+      run: |
+        cd ${{ env.SATIS_PATH }}
+        composer install
+      shell: bash
+
+    - id: run-satis
+      name: 'Run Satis'
+      run: |
+        cd ${{ env.SATIS_PATH }}
+        SATIS_CONFIG_PATH="${{ github.workspace }}/satis.json"
+        if [ -n "${{ inputs.satis-config }}" ]; then
+          SATIS_CONFIG_PATH="${{ github.workspace }}/${{ inputs.satis-config }}/satis.json"
+        fi
+        bin/satis build "$SATIS_CONFIG_PATH" ${{ env.SATIS_PATH }}/dist
+      shell: bash
+
+    - id: create-tarball
+      name: 'Create Tarball Of Build'
+      run: |
+        cd ${{ env.SATIS_PATH }}/dist
+        tar -cf ../modules-repository-build.tar *
+      shell: bash
+
+    - id: upload-artifact
+      name: 'Upload Build As Artifact'
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ inputs.artifact-name }}-${{ github.run_id }}
+        path: ${{ env.SATIS_PATH }}/${{ inputs.artifact-name }}.tar
+        retention-days: ${{ inputs.retention-days }}
+        if-no-files-found: error
+
+    - id: output-artifact-name
+      if: ${{ success() }}
+      name: 'Set Artifact Name As Output'
+      run: echo "satis-artifact=${{ inputs.artifact-name }}-${{ github.run_id }}" >> $GITHUB_OUTPUT
+      shell: bash

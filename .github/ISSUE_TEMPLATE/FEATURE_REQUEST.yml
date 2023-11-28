@@ -1,0 +1,31 @@
+name: "🎁 Feature Request"
+description: 'Suggest a new feature/enhancement.'
+title: "[Feature]: "
+labels: ["enhancement"]
+assignees:
+  - mattgrul
+
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What would you like to be added?
+      description: Please check existing issues to avoid making duplicates. Any duplicate issue will be closed immediately.
+    validations:
+      required: true
+
+  - type: textarea
+    id: why
+    attributes:
+      label: Why is this needed?
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/mattgrul/satis-to-artifact-action/blob/main/.github/CODE_OF_CONDUCT.md)
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true
