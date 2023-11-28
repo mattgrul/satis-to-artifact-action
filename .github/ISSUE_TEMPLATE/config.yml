@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Discussion
+    url: https://github.com/mattgrul/satis-to-artifact-action/discussions
+    about: If you have more general questions about this action, please use the Discussions tab.

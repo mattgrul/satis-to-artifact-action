@@ -1,0 +1,66 @@
+name: "🐛 Bug Report"
+description: 'Let us know about a bug.'
+title: "[Bug]: "
+labels: ["bug"]
+assignees:
+  - mattgrul
+
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Please provide a clear and concise description of what the bug is. If applicable, add screenshots to help explain your problem.
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-expect
+    attributes:
+      label: What did you expect to happen?
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: What version are you using, this could be a tag, branch or SHA hash?
+      placeholder: vX.Y
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output
+      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+      render: shell
+
+  - type: dropdown
+    id: environment
+    attributes:
+      label: What are your runner environments?
+      multiple: true
+      options:
+        - self-hosted
+        - linux
+        - window
+        - macos
+    validations:
+      required: true
+
+  - type: input
+    id: ghes
+    attributes:
+      label: Are you on GitHub Enterprise Server? If so, what version?
+      placeholder: vX.Y
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/mattgrul/satis-to-artifact-action/blob/main/.github/CODE_OF_CONDUCT.md)
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true

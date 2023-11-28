@@ -1,0 +1,31 @@
+name: "📚 Documentation Issues"
+description: 'Make a suggestion to improve the documentation!'
+title: "[Documentation]: "
+labels: ["documentation"]
+assignees:
+  - mattgrul
+
+body:
+  - type: textarea
+    id: new-feature
+    attributes:
+      label: New Feature
+      description: Describe the new feature you would like to see.
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant feature code
+      description: If you have an example section of code you can add it here. This will be automatically formatted into code, so no need for backticks.
+      render: shell
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/mattgrul/satis-to-artifact-action/blob/main/.github/CODE_OF_CONDUCT.md)
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true
