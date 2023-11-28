@@ -1,0 +1,47 @@
+name: 'Test Action'
+author: 'Matt Walsh'
+description: 'Test Composer Satis Repository action for testing workflows.'
+
+branding:
+  icon: activity
+  color: purple
+
+runs:
+  using: 'composite'
+  steps:
+    - id: create-satis-json
+      name: 'Create Configuration File'
+      run: |
+        cd ${{ github.workspace }}
+        cat << EOF > satis.json
+        {
+          "name": "mattgrul/test-packages",
+          "homepage": "http://packages.test.org",
+          "repositories": [
+            {
+              "type": "vcs",
+              "url": "https://github.com/composer/satis"
+            }
+          ],
+          "require-all": true
+        }
+        EOF
+      shell: bash
+
+    - id: generate-satis-repo
+      name: 'Test Run Generate Satis Repository Action'
+      uses: ./
+      env:
+        SATIS_PATH: ${{ github.workspace }}/satis
+
+    - id: test-pass
+      if: ${{ success() }}
+      name: 'Test Pass'
+      run: echo "Test PASS"
+      shell: bash
+
+    - id: check_artifact
+      if: ${{ failure() }}
+      name: 'Test Fail'
+      run: echo "Test FAIL"
+      shell: bash
