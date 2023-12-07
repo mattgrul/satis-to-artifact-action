@@ -1,5 +1,4 @@
 name: 'Test Action'
-run-name: 'Test Action'
 
 on:
   push:
@@ -15,6 +14,7 @@ on:
       - 'main'
       - 'releases/**'
   workflow_dispatch:
+##TODO - ADD NIGHTLY CRON JOB TEST FOR ALL VERSIONS
 
 permissions:
   contents: read
