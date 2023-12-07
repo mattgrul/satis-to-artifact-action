@@ -45,7 +45,7 @@ runs:
   steps:
     - id: setup-php
       name: 'Setup PHP'
-      uses: shivammathur/setup-php@v1
+      uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ inputs.php-version }}
         tools: composer:${{ inputs.composer-version }}
