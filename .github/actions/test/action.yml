@@ -38,6 +38,7 @@ runs:
           "require-all": true
         }
         EOF
+      shell: bash
 
     - id: generate-satis-repo
       name: 'Test Run Generate Satis Repository Action'
