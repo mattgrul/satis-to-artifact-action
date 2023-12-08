@@ -1,0 +1,58 @@
+name: 'Test Action'
+author: 'Matt Walsh'
+description: 'Test Composer Satis Repository action for testing workflows.'
+
+branding:
+  icon: activity
+  color: purple
+
+inputs:
+  ref:
+    description: 'The version of code to test, can be a branch, tag or SHA.'
+    required: false
+    default: 'main'
+
+runs:
+  using: 'composite'
+  steps:
+    - id: checkout-repository
+      name: 'Checkout Repository'
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ inputs.ref }}
+
+    - id: create-satis-json
+      name: 'Create Configuration File'
+      run: |
+        cd ${{ github.workspace }}
+        cat << EOF > satis.json
+        {
+          "name": "mattgrul/test-packages",
+          "homepage": "http://packages.test.org",
+          "repositories": [
+            {
+              "type": "vcs",
+              "url": "https://github.com/composer/satis"
+            }
+          ],
+          "require-all": true
+        }
+        EOF
+
+    - id: generate-satis-repo
+      name: 'Test Run Generate Satis Repository Action'
+      uses: ./
+      env:
+        SATIS_PATH: ${{ github.workspace }}/satis
+
+    - id: test-pass
+      if: ${{ success() }}
+      name: 'Test Pass'
+      run: echo "Test PASS"
+      shell: bash
+
+    - id: check_artifact
+      if: ${{ failure() }}
+      name: 'Test Fail'
+      run: echo "Test FAIL"
+      shell: bash

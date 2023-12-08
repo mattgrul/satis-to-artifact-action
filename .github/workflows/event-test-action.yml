@@ -1,0 +1,35 @@
+name: 'Event Test Action'
+
+on:
+  push:
+    branches:
+      - 'main'
+      - 'releases/**'
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+    branches:
+      - 'main'
+      - 'releases/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  event_test_action:
+    name: 'Test Build Composer Satis Repository'
+    runs-on: ubuntu-latest
+    steps:
+      - id: checkout-repository
+        name: 'Checkout Repository'
+        uses: actions/checkout@v4
+
+      - id: generate-satis-repo
+        name: 'Test Run Generate Satis Repository Action'
+        uses: ./.github/actions/test
+        with:
+          ref: ${{ github.ref }}
+

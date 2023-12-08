@@ -1,0 +1,25 @@
+name: 'Nightly v1 Test Action'
+
+on:
+  schedule:
+    - cron: '10 0 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  nightly_v1_test_action:
+    name: 'Test Build Composer Satis Repository'
+    runs-on: ubuntu-latest
+    steps:
+      - id: checkout-repository
+        name: 'Checkout Repository'
+        uses: actions/checkout@v4
+
+      - id: generate-satis-repo
+        name: 'Test Run Generate Satis Repository Action'
+        uses: ./.github/actions/test
+        with:
+          ref: releases/v1
+
