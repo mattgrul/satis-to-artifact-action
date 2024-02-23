@@ -54,8 +54,6 @@ runs:
         php-version: ${{ inputs.php-version }}
         tools: composer:${{ inputs.composer-version }}
         coverage: none
-      env:
-        COMPOSER_TOKEN: ${{ secrets.YOUR_TOKEN }}
 
     - id: configure-composer
       if: inputs.composer-token != ''
