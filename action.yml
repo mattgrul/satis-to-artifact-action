@@ -11,6 +11,9 @@ inputs:
     description: 'The version of PHP to use.'
     required: false
     default: '8.3'
+  composer-token:
+    description: 'Token for Composer authentication.'
+    required: false
   composer-version:
     description: 'The version of Composer to use.'
     required: false
@@ -53,7 +56,12 @@ runs:
 
     - id: configure-composer
       name: 'Configure Composer GitHub Token'
-      run: composer config --global --auth github-oauth.github.com ${{ github.token }}
+      run: |
+        if [ -n "${{ inputs.composer-token }}" ]; then
+          composer config --global --auth github-oauth.github.com ${{ inputs.composer-token }}
+        else
+          composer config --global --auth github-oauth.github.com ${{ github.token }}
+        fi
       shell: bash
 
     - id: download-satis
@@ -85,7 +93,7 @@ runs:
       name: 'Run Composer Install'
       run: |
         cd ${{ env.SATIS_PATH }}
-        composer install
+        composer install --no-progress --prefer-dist --optimize-autoloader
       shell: bash
 
     - id: run-satis
