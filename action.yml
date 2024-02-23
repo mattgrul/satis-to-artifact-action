@@ -11,6 +11,10 @@ inputs:
     description: 'The version of PHP to use.'
     required: false
     default: '8.3'
+  composer-token:
+    description: 'Token for Composer authentication.'
+    required: false
+    default: ''
   composer-version:
     description: 'The version of Composer to use.'
     required: false
@@ -44,7 +48,7 @@ runs:
   using: 'composite'
   steps:
     - id: setup-php
-      name: 'Setup PHP'
+      name: 'Setup PHP'.
       uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ inputs.php-version }}
@@ -52,7 +56,14 @@ runs:
         coverage: none
 
     - id: configure-composer
+      if: ${{ inputs.composer-token != '' }}
       name: 'Configure Composer GitHub Token'
+      run: composer config --global --auth github-oauth.github.com ${{ inputs.composer-token }}
+      shell: bash
+
+    - id: configure-composer-null
+      if: ${{ inputs.composer-token == '' }}
+      name: 'Alternative Default Composer GitHub Token'
       run: composer config --global --auth github-oauth.github.com ${{ github.token }}
       shell: bash
 
