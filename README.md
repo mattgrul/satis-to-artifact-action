@@ -1,18 +1,16 @@
 # Composer Satis Repository Generator
 
-| Version | Latest Commit                                                                                                                                                                                                                               | Nightly Build                                                                                                                                                                                                                                             |
-|---------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `main`  | [![Latest Test](https://github.com/mattgrul/satis-to-artifact-action/actions/workflows/event-test-action.yml/badge.svg?branch=main)](https://github.com/mattgrul/satis-to-artifact-action/actions/workflows/event-test-action.yml)          | [![Nightly Main Test](https://github.com/mattgrul/satis-to-artifact-action/actions/workflows/nightly-main-test-action.yml/badge.svg)](https://github.com/mattgrul/satis-to-artifact-action/actions/workflows/nightly-main-test-action.yml)    |
-| `v1`    | [![Latest Test](https://github.com/mattgrul/satis-to-artifact-action/actions/workflows/event-test-action.yml/badge.svg?branch=releases%2Fv1)](https://github.com/mattgrul/satis-to-artifact-action/actions/workflows/event-test-action.yml) | [![Nightly v1 Test](https://github.com/mattgrul/satis-to-artifact-action/actions/workflows/nightly-v1-test-action.yml/badge.svg)](https://github.com/mattgrul/satis-to-artifact-action/actions/workflows/nightly-v1-test-action.yml) |
+| Version | Latest Commit                                                                                                                                                                                                                               | Nightly Build                                                                                                                                                                                                                              |
+|---------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `main`  | [![Latest Test](https://github.com/mattgrul/satis-to-artifact-action/actions/workflows/event-test-action.yml/badge.svg?branch=main)](https://github.com/mattgrul/satis-to-artifact-action/actions/workflows/event-test-action.yml)          | [![Nightly Main Test](https://github.com/mattgrul/satis-to-artifact-action/actions/workflows/nightly-main-test-action.yml/badge.svg)](https://github.com/mattgrul/satis-to-artifact-action/actions/workflows/nightly-main-test-action.yml) |
+| `v1`    | [![Latest Test](https://github.com/mattgrul/satis-to-artifact-action/actions/workflows/event-test-action.yml/badge.svg?branch=releases%2Fv1)](https://github.com/mattgrul/satis-to-artifact-action/actions/workflows/event-test-action.yml) | [![Nightly v1 Test](https://github.com/mattgrul/satis-to-artifact-action/actions/workflows/nightly-v1-test-action.yml/badge.svg)](https://github.com/mattgrul/satis-to-artifact-action/actions/workflows/nightly-v1-test-action.yml)       |
 
 Build a Composer Satis repository and output the final build to a GitHub artifact.
 
 ### Private Repositories
 
-For private GitHub repositories hosted on the same user account or organization the default `github` context is used
-within the action like
-so `${{ github.token }}`. This sets the composer `github-oauth` token within the runner and allows private repositories
-to be added to the Satis config file.
+For private GitHub repositories you can pass a token through using the `composer-token` input. This sets the
+composer `github-oauth` token within the runner and allows private repositories to be added to the Satis config file.
 
 ## Usage
 
@@ -45,6 +43,7 @@ jobs:
         name: 'Run Generate Satis Repository Action'
         uses: masheto-org/satis-to-artifact-action@v1
         with:
+          composer-token: ${{ secrets.SECRET_NAME }}
           composer-version: 2.2 # Composer version 2.2
           php-version: 8.1 # PHP version 8.1
           satis-version: fafc1c2eca6394235f12f8a3ee4da7fc7c9fc874 # Satis from the commit SHA fafc1c2eca6394235f12f8a3ee4da7fc7c9fc874
@@ -62,8 +61,9 @@ There are 7 input values that can be configured for the action which are as foll
 
 | Name                                        | Required | Default                  | Description                                   |
 |---------------------------------------------|----------|--------------------------|-----------------------------------------------|
-| [composer-version](#php--composer-versions) | No       | 2.6                      | The Composer version to use                   |
 | [php-version](#php--composer-versions)      | No       | 8.3                      | The PHP version to use                        |
+| [composer-token](#composer-token)           | No       | `${{github.token}}`      | The GitHub token to use                       |
+| [composer-version](#php--composer-versions) | No       | 2.6                      | The Composer version to use                   |
 | [satis-version](#satis-version)             | No       | main                     | The version of Satis to use                   |
 | [satis-config](#satis-config)               | No       | `${{github.workspace}}`  | The path to the Satis config file             |
 | [cache-composer](#cache-composer)           | No       | true                     | Whether or not to cache the composer files    |
@@ -80,6 +80,16 @@ the [Setup PHP in GitHub Actions](https://github.com/shivammathur/setup-php#tada
 The latest stable version of composer is set up by default. You can set up the required composer version by specifying
 the major version v1 or v2, or the version in major.minor or semver format. Additionally, for composer snapshot a
 preview can also be specified to set up the respective releases.
+
+### Composer Token
+
+If you need to access private repositories you can pass a token through using the `composer-token` input. The token
+should be created as a secret and passed through securely, for example `composer-token: ${{ secrets.SECRET_NAME }}`. For
+more information on creating a secret see
+the [GitHub documentation](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions).
+
+By default, the action uses the token `${{ github.token if no composer-token is provided which will allow access to the
+repository the action is running on.
 
 ### Cache Composer
 
