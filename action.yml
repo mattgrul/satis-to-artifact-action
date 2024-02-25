@@ -14,7 +14,6 @@ inputs:
   composer-token:
     description: 'Token for Composer authentication.'
     required: false
-    default: ''
   composer-version:
     description: 'The version of Composer to use.'
     required: false
