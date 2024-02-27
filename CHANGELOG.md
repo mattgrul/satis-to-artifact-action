@@ -3,6 +3,11 @@
 ## Unreleased Changes
 
 - N/A
+-
+
+## v1.1.1
+
+- Allow a repository URL to be passed for partial updates. ([#11](https://github.com/mattgrul/satis-to-artifact-action/pull/11))
 
 ## v1.1.0
 
