@@ -37,6 +37,9 @@ inputs:
     description: 'Duration to keep the build artifact, in days.'
     required: false
     default: '90'
+  repository-url:
+    description: 'Repository URL for partial updates.'
+    required: false
 
 outputs:
   satis-artifact:
