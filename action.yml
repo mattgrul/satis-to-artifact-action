@@ -107,7 +107,12 @@ runs:
         if [ -n "${{ inputs.satis-config }}" ]; then
           SATIS_CONFIG_PATH="${{ github.workspace }}/${{ inputs.satis-config }}/satis.json"
         fi
-        bin/satis build "$SATIS_CONFIG_PATH" ${{ env.SATIS_PATH }}/dist
+        SATIS_BUILD_COMMAND="bin/satis build \"$SATIS_CONFIG_PATH\" ${{ env.SATIS_PATH }}/dist"
+        if [ -n "${{ inputs.repository-url }}" ]; then
+          SATIS_BUILD_COMMAND="bin/satis build --repository-url ${{ inputs.repository-url }} \"$SATIS_CONFIG_PATH\" ${{ env.SATIS_PATH }}/dist"
+        fi
+        echo $SATIS_BUILD_COMMAND
+        eval $SATIS_BUILD_COMMAND
       shell: bash
 
     - id: create-tarball

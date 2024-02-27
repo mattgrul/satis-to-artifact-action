@@ -150,8 +150,9 @@ with:
 
 ### Repository URL
 
-If you only want to scan and update packages in a specific repository you can use the `repository-url` input value. This
-should be the full URL of the repository to scan and update, for example, `https://github.com/OWNER/REPO`
+To speed up the build process you can use the `repository-url` input value to only scan and update the packages in a
+specific repository. This should be the full URL of the repository to scan and update, for
+example, `https://github.com/OWNER/REPO` and should be within the `satis.json` config file.
 
 ## Outputs
 
