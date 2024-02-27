@@ -51,6 +51,7 @@ jobs:
           cache-composer: false # Disable caching of the Composer cache directory
           artifact-name: my-composer-repo #Output the final build to an artifact named `my-composer-repo`
           retention-days: 30 # Keep the artifact for 30 days
+          repository-url: https://github.com/OWNER/REPO # Only scan and update packages in this repository
         env:
           SATIS_PATH: ${{ github.workspace }}/satis
 ```
@@ -65,10 +66,11 @@ There are 7 input values that can be configured for the action which are as foll
 | [composer-token](#composer-token)           | No       | `${{github.token}}`      | The GitHub token to use                       |
 | [composer-version](#php--composer-versions) | No       | 2.6                      | The Composer version to use                   |
 | [satis-version](#satis-version)             | No       | main                     | The version of Satis to use                   |
-| [satis-config](#satis-config)               | No       | `${{github.workspace}}`  | The path to the Satis config file             |
+| [satis-config](#satis-config)               | No       | `null`                   | The path to the Satis config file             |
 | [cache-composer](#cache-composer)           | No       | true                     | Whether or not to cache the composer files    |
 | [artifact-name](#artifact-name)             | No       | modules-repository-build | The name of the final artifact                |
 | [retention-days](#retention-days)           | No       | 90                       | The duration to keep the final build artifact |
+| [repository-url](#repository-url)           | No       | `null`                   | The duration to keep the final build artifact |
 
 ### PHP & Composer Versions
 
@@ -145,6 +147,12 @@ placed the config file in a `build` directory within the repository root you can
 with:
   satis-config: build
 ```
+
+### Repository URL
+
+To speed up the build process you can use the `repository-url` input value to only scan and update the packages in a
+specific repository. This should be the full URL of the repository to scan and update, for
+example, `https://github.com/OWNER/REPO` and should be within the `satis.json` config file.
 
 ## Outputs
 
