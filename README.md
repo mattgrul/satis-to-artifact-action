@@ -210,7 +210,7 @@ version tags, such as v1 and v1.1, are rolling tags and synced with the latest m
 
 - `mattgrul/satis-to-artifact-action@v1` - Suitable for receiving all updates in the `v1` range (up to `v1.x.x`).
 - `mattgrul/satis-to-artifact-action@v1.0` - Suitable for receiving all updates in the `v1.0.x` range.
-- `mattgrul/satis-to-artifact-action@v1.1.1` - Pins to the specific v1.1.1 patch version.
+- `mattgrul/satis-to-artifact-action@v1.1.2` - Pins to the specific v1.1.2 patch version.
 
 If you would like to pin to a specific commit for compatibility reasons you can use a specific commit SHA which are
 immutable.

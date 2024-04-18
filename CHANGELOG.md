@@ -3,7 +3,10 @@
 ## Unreleased Changes
 
 - N/A
--
+
+## v1.1.2
+
+- Update old readme file references. ([#12](https://github.com/mattgrul/satis-to-artifact-action/pull/12))
 
 ## v1.1.1
 
