@@ -25,7 +25,7 @@ jobs:
 
       - id: generate-satis-repo
         name: 'Run Generate Satis Repository Action'
-        uses: masheto-org/satis-to-artifact-action@v1
+        uses: mattgrul/satis-to-artifact-action@v1
         env:
           SATIS_PATH: ${{ github.workspace }}/satis
 ```
@@ -41,7 +41,7 @@ jobs:
 
       - id: generate-satis-repo
         name: 'Run Generate Satis Repository Action'
-        uses: masheto-org/satis-to-artifact-action@v1
+        uses: mattgrul/satis-to-artifact-action@v1
         with:
           composer-token: ${{ secrets.SECRET_NAME }}
           composer-version: 2.2 # Composer version 2.2
@@ -176,7 +176,7 @@ to download the artifact in a subsequent step like so.
 ```yaml
 - id: generate-satis-repo
   name: 'Run Generate Satis Repository Action'
-  uses: masheto-org/satis-to-artifact-action@v1
+  uses: mattgrul/satis-to-artifact-action@v1
   env:
     SATIS_PATH: ${{ github.workspace }}/satis
 
@@ -208,19 +208,19 @@ It is recommended to use dependabot with semantic versioning to keep the actions
 Depending on your preference for receiving updates, you can use any of the following tags. Note that major and minor
 version tags, such as v1 and v1.1, are rolling tags and synced with the latest minor and patch releases.
 
-- `masheto-org/satis-to-artifact-action@v1` - Suitable for receiving all updates in the `v1` range (up to `v1.x.x`).
-- `masheto-org/satis-to-artifact-action@v1.0` - Suitable for receiving all updates in the `v1.0.x` range.
-- `masheto-org/satis-to-artifact-action@v1.1.1` - Pins to the specific v1.1.1 patch version.
+- `mattgrul/satis-to-artifact-action@v1` - Suitable for receiving all updates in the `v1` range (up to `v1.x.x`).
+- `mattgrul/satis-to-artifact-action@v1.0` - Suitable for receiving all updates in the `v1.0.x` range.
+- `mattgrul/satis-to-artifact-action@v1.1.1` - Pins to the specific v1.1.1 patch version.
 
 If you would like to pin to a specific commit for compatibility reasons you can use a specific commit SHA which are
 immutable.
 
-- `masheto-org/satis-to-artifact-action@e4982dc3037fdc14402c3e080556a172d276463a` - Will use a specific commit version.
+- `mattgrul/satis-to-artifact-action@e4982dc3037fdc14402c3e080556a172d276463a` - Will use a specific commit version.
 
 ### Latest
 
 Although it is not guaranteed to be stable and should be used with caution, you can get the latest version by using the
-branch `main` such as `masheto-org/satis-to-artifact-action@main`.
+branch `main` such as `mattgrul/satis-to-artifact-action@main`.
 
 ## Dependencies
 
